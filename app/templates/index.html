@@ -2,74 +2,69 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Optimizador de Ruta</title>
+    <title>Simulated Annealing - Optimización de Ruta</title>
     <style>
         body {
-            background-color: #111;
-            color: #eee;
-            font-family: "Courier New", Courier, monospace;
-            padding: 2rem;
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f9f9f9;
+            color: #333;
         }
 
         h1 {
-            text-align: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .contenedor {
-            max-width: 800px;
-            margin: auto;
-            border: 1px solid #444;
-            padding: 1.5rem;
-            background-color: #222;
-            border-radius: 10px;
+            color: #007BFF;
         }
 
         button {
-            background-color: #000;
-            color: #fff;
-            padding: 10px 20px;
-            border: 1px solid #fff;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 1rem;
         }
 
         button:hover {
-            background-color: #333;
+            background-color: #0056b3;
         }
 
-        .resultado {
-            margin-top: 20px;
-            white-space: pre-wrap;
-            font-size: 14px;
-            background-color: #111;
-            padding: 10px;
-            border: 1px dashed #888;
+        pre {
+            background-color: #eee;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 1rem;
         }
     </style>
 </head>
 <body>
-    <div class="contenedor">
-        <h1>🛣️ Optimizador de Ruta</h1>
-        <p>Este sistema utiliza Simulated Annealing para encontrar una ruta optimizada entre varias ciudades.</p>
-        <button onclick="obtenerRuta()">Optimizar Ruta</button>
+    <h1>Optimización de Ruta con Simulated Annealing</h1>
+    <p>Presiona el botón para calcular una ruta optimizada.</p>
+    <button id="optimizar-btn">Optimizar Ruta</button>
 
-        <div class="resultado" id="resultado"></div>
-    </div>
+    <pre id="resultado">Esperando acción...</pre>
 
     <script>
-        async function obtenerRuta() {
-            const res = await fetch('/');
-            const data = await res.json();
-            const resultado = document.getElementById('resultado');
-            resultado.textContent =
-                '🔁 Ruta inicial:\n' + data.ruta_inicial.join(" → ") + '\n\n' +
-                '📏 Distancia inicial: ' + data.distancia_inicial.toFixed(2) + '\n\n' +
-                '✅ Ruta optimizada:\n' + data.ruta_optimizada.join(" → ") + '\n\n' +
-                '📉 Distancia optimizada: ' + data.distancia_optimizada.toFixed(2);
-        }
+        document.getElementById("optimizar-btn").addEventListener("click", function () {
+            fetch("/optimizar")
+                .then(response => {
+                    if (!response.ok) throw new Error("Error en la respuesta del servidor");
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById("resultado").textContent =
+                        "Ruta inicial:\n" + data.ruta_inicial.join(" → ") +
+                        "\n\nDistancia inicial: " + data.distancia_inicial.toFixed(2) +
+                        "\n\nRuta optimizada:\n" + data.ruta_optimizada.join(" → ") +
+                        "\n\nDistancia optimizada: " + data.distancia_optimizada.toFixed(2);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("resultado").textContent = "Ocurrió un error al intentar optimizar la ruta.";
+                });
+        });
     </script>
 </body>
 </html>
