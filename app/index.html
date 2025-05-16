@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Optimizador de Rutas</title>
+    <style>
+        body { font-family: Arial; padding: 2rem; background: #f5f5f5; }
+        button { padding: 1rem; font-size: 1rem; cursor: pointer; }
+        pre { background: white; padding: 1rem; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Simulated Annealing para Optimizar Rutas</h1>
+    <button onclick="optimizar()">Optimizar Ruta</button>
+    <pre id="resultado">Presiona el botón para comenzar...</pre>
+
+    <script>
+        function optimizar() {
+            fetch("/optimizar")
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText = JSON.stringify(data, null, 2);
+                });
+        }
+    </script>
+</body>
+</html>
