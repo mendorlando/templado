@@ -2,25 +2,73 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Optimizador de Rutas</title>
+    <title>Optimizador de Ruta</title>
     <style>
-        body { font-family: Arial; padding: 2rem; background: #f5f5f5; }
-        button { padding: 1rem; font-size: 1rem; cursor: pointer; }
-        pre { background: white; padding: 1rem; border-radius: 8px; }
+        body {
+            background-color: #111;
+            color: #eee;
+            font-family: "Courier New", Courier, monospace;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .contenedor {
+            max-width: 800px;
+            margin: auto;
+            border: 1px solid #444;
+            padding: 1.5rem;
+            background-color: #222;
+            border-radius: 10px;
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border: 1px solid #fff;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        .resultado {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            background-color: #111;
+            padding: 10px;
+            border: 1px dashed #888;
+        }
     </style>
 </head>
 <body>
-    <h1>Simulated Annealing para Optimizar Rutas</h1>
-    <button onclick="optimizar()">Optimizar Ruta</button>
-    <pre id="resultado">Presiona el botón para comenzar...</pre>
+    <div class="contenedor">
+        <h1>🛣️ Optimizador de Ruta</h1>
+        <p>Este sistema utiliza Simulated Annealing para encontrar una ruta optimizada entre varias ciudades.</p>
+        <button onclick="obtenerRuta()">Optimizar Ruta</button>
+
+        <div class="resultado" id="resultado"></div>
+    </div>
 
     <script>
-        function optimizar() {
-            fetch("/optimizar")
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("resultado").innerText = JSON.stringify(data, null, 2);
-                });
+        async function obtenerRuta() {
+            const res = await fetch('/');
+            const data = await res.json();
+            const resultado = document.getElementById('resultado');
+            resultado.textContent =
+                '🔁 Ruta inicial:\n' + data.ruta_inicial.join(" → ") + '\n\n' +
+                '📏 Distancia inicial: ' + data.distancia_inicial.toFixed(2) + '\n\n' +
+                '✅ Ruta optimizada:\n' + data.ruta_optimizada.join(" → ") + '\n\n' +
+                '📉 Distancia optimizada: ' + data.distancia_optimizada.toFixed(2);
         }
     </script>
 </body>
